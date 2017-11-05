@@ -7,6 +7,7 @@ class library
     int stack_dueDate[]=new int[10000];//stores the due date of book
     String queue_nmbk[]=new String[10000];//stores the name of book
     int stack_fine[]=new int[10000];//store the total fine
+    static int count_seats;//to count no of seats filled;
     public int top=-1;
     InputStreamReader isr= new InputStreamReader(System.in);
     BufferedReader br = new BufferedReader(isr);
@@ -15,8 +16,17 @@ class library
         InputStreamReader isr= new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
         System.out.println("WELCOME TO LIBRARY PORTAL");
-        System.out.println("1.ENTER DETAILS \n 2.DUE DATE OF BOOK \n 3. FINE ACCUMULATION \n 4. TIMINGS OF LIBRARY \n 5. SEATS AVAILABLE \n 6.List of books \n 7.Add new Books \n 8.Dispaly the members");
-        int ch=Integer.parseInt(br.readLine());
+        System.out.println("1.Lending Section \n 2.Reference Section");
+        int c=Integer.parseInt(br.readLine());
+        if(c==1)
+        {
+            System.out.println("1.ENTER DETAILS \n 2.DUE DATE OF BOOK \n 3. FINE ACCUMULATION \n 4. TIMINGS OF LIBRARY \n 5. SEATS AVAILABLE \n 6.List of books \n 7.Add new Books \n 8.Dispaly the members");
+            int ch=Integer.parseInt(br.readLine());
+        }
+        else if(c==2)
+        {
+            count_seats++;
+        }
     }
 
     public void details(String s,long roll_no)throws IOException//To enter the details about the user
@@ -194,6 +204,35 @@ class library
                 df=0;
             }
             stack_fine[j]=df*2;
+        }
+    }
+
+    public void timings(String wd)
+    {
+        String w=wd;
+        if(w=="Monday"||w=="Tuesday"||w=="Wednesday"||w=="Thrusday"||w=="Friday")
+        {
+            System.out.println("8:30am-8:30pm");
+        }
+        else if(w=="")
+        {
+            System.out.println("8:30am-5:30pm");
+        }
+        else
+        {
+            System.out.println("CLOSED");
+        }
+    }
+
+    public  void seats_avail()
+    {
+        if(count_seats>90)
+        {
+            System.out.println("SEATS ARE FILLED");
+        }
+        else
+        {
+            System.out.println("SEATS ARE FREE...");
         }
     }
 }
