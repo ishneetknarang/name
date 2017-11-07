@@ -1,35 +1,89 @@
 import java.io.*;
 class library
 {
-    String stack_name[]= new String[10000];//stores the name
-    long stack_rollno[]=new long[10000];//stores the roll_no
-    int stack_date[]=new int[10000];//stores the date of book issuse
-    int stack_dueDate[]=new int[10000];//stores the due date of book
-    String queue_nmbk[]=new String[10000];//stores the name of book
-    int stack_fine[]=new int[10000];//store the total fine
+     static String stack_name[]= new String[10000];//stores the name
+    static long stack_rollno[]=new long[10000];//stores the roll_no
+     static int stack_date[]=new int[10000];//stores the date of book issuse
+    static int stack_dueDate[]=new int[10000];//stores the due date of book
+    static String queue_nmbk[]=new String[10000];//stores the name of book
+    static int stack_fine[]=new int[10000];//store the total fine
     static int count_seats;//to count no of seats filled;
-    public int top=-1;
+    static int top=-1,front=-1,rear=-1,size=0;;
     InputStreamReader isr= new InputStreamReader(System.in);
     BufferedReader br = new BufferedReader(isr);
-    public static void main(String args[])throws IOException
+    public static void main()throws IOException
     {
         InputStreamReader isr= new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader(isr);
         System.out.println("WELCOME TO LIBRARY PORTAL");
         System.out.println("1.Lending Section \n 2.Reference Section");
         int c=Integer.parseInt(br.readLine());
+        library ob= new library();
         if(c==1)
         {
-            System.out.println("1.ENTER DETAILS \n 2.DUE DATE OF BOOK \n 3. FINE ACCUMULATION \n 4. TIMINGS OF LIBRARY \n 5. SEATS AVAILABLE \n 6.List of books \n 7.Add new Books \n 8.Dispaly the members");
-            int ch=Integer.parseInt(br.readLine());
+            int ch=0;
+            do
+            {
+                System.out.println("1.ENTER DETAILS \n 2.DUE DATE OF BOOK \n 3. FINE ACCUMULATION \n 4. TIMINGS OF LIBRARY \n 5. SEATS AVAILABLE \n 6.List of books \n 7.Add new Books \n 8.Dispaly the members \n 9.EXIT");
+                ch=Integer.parseInt(br.readLine());
+                switch(ch)
+                {
+                    case 1:
+                    ob.details();
+                    break;
+                    case 2:
+                    System.out.println("Enter the name of the person whose book's due date you want to check");
+                    String nper=br.readLine();
+                    ob.due_date();
+                    for(int i=0;i<top;i++)
+                    {
+                      if(stack_name[i]==nper)
+                      {
+                         System.out.println("DUE DATE :-"+stack_dueDate[i]); 
+                      }
+                    }
+                    break;
+                    case 3:
+                    ob.fine_accumulation();
+                    System.out.println("Enter the name of the person whose TOTAL FINE you want to check");
+                    String nper1=br.readLine();
+                    for(int i=0;i<top;i++)
+                    {
+                      if(stack_name[i]==nper1)
+                      {
+                         System.out.println("TOTAL FINE :-"+stack_fine[i]); 
+                      }
+                    }
+                    break;
+                    case 4:
+                    System.out.println("Enter day");
+                    String day=br.readLine();
+                    ob.timings(day);
+                    break;
+                    case 5:
+                    ob.seats_avail();
+                    break;
+                    case 6:
+                    case 7:
+                    ob.books();
+                    break;
+                    case 8:
+                    ob.display();
+                    break;
+                    case 9:
+                    System.out.println("Exit");
+                }
+            }while(ch!=9);
         }
+        
         else if(c==2)
         {
             count_seats++;
+            System.out.println("TOTAL SEATS PRESENT :-"+(120-count_seats));
         }
     }
 
-    public void details(String s,long roll_no)throws IOException//To enter the details about the user
+    public void push(String s, long roll_no,String nm,int da)
     {
         if(top >=10000)
         {
@@ -39,10 +93,27 @@ class library
         {
             stack_name[++top]=s;
             stack_rollno[++top]=roll_no;
-            System.out.println("Enter the name of book issused and enter the date in the form ddmmyy");
-            queue_nmbk[++top]=br.readLine();
-            stack_date[++top]=Integer.parseInt(br.readLine());
+            queue_nmbk[++rear]=nm;
+            stack_date[++top]=da;
         }
+    }
+
+    public void details()throws IOException//To enter the details about the user
+    {
+        BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
+        System.out.println("Enter the name & rollno");
+        String s=br.readLine();
+        long r=Long.parseLong(br.readLine());
+        System.out.println("Enter the name of book issused and enter the date in the form ddmmyy");
+        String nb=br.readLine();
+        int de=Integer.parseInt(br.readLine());
+        push(s,r,nb,de);
+    }
+    public void history()//To get the record of books that are stored.
+    {
+        System.out.println("Enter the name of the student whose history of books issused by him/her has to be displayed");
+        
+        
     }
 
     public void due_date()// the date to return the book
@@ -233,6 +304,61 @@ class library
         else
         {
             System.out.println("SEATS ARE FREE...");
+        }
+    }
+
+    public void books()throws IOException
+    {
+        System.out.println("1.TO KNOW LIST OF BOOKS PRESENT \n 2.TO ADD A NEW BOOK");
+        int h=Integer.parseInt(br.readLine());
+
+        switch(h)
+        {
+            case 1:
+            System.out.print("\nList of Books :- ");
+            if (rear == 0&& front==0)
+            {
+                System.out.print("Empty\n");
+                return ;
+            }
+            else
+            {
+                for (int i = front; i <= rear; i++)
+                {
+                    System.out.print(queue_nmbk[i]+" ");
+                    size++;
+                }
+            }
+            System.out.println(); 
+            break;
+            case 2:
+            System.out.println("Enter the name of the book you want to add");
+            String p=br.readLine();
+            if (rear == -1) 
+            {
+                front = 0;
+                rear = 0;
+                queue_nmbk[rear] =p;
+            }
+            else if (rear + 1 >= size)
+            {
+                throw new IndexOutOfBoundsException("Overflow Exception");
+            }
+            else if ( rear + 1 < size)
+            {
+                queue_nmbk[++rear] = p;
+            }
+            break;
+            default:
+            System.out.println("WRONG CHOICE");
+        }
+    }
+    public void display()
+    {
+        System.out.println("Names of member \t RollNo");
+        for(int i=0;i<top;i++)
+        {
+            System.out.println(stack_name[i]+"\t"+stack_rollno[i]);
         }
     }
 }
