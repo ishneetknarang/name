@@ -107,11 +107,27 @@ class library
         System.out.println("Enter the name of book issused and enter the date in the form ddmmyy");
         String nb=br.readLine();
         int de=Integer.parseInt(br.readLine());
+        int check=0;
+        for(int k=0;k<top;k++)
+        {
+            if(s==stack_name[k])
+            {
+                
+                if(check<=7)
+                {
+                    System.out.println("BOOKS CAN BE ISSUSED");
+                }
+                else
+                {
+                    System.out.println("BOOKS CAN'T BE ISSUSED");
+                    break;
+                }
+            }
+        }
         push(s,r,nb,de);
     }
     public void history()//To get the record of books that are stored.
     {
-        System.out.println("Enter the name of the student whose history of books issused by him/her has to be displayed");
         
         
     }
