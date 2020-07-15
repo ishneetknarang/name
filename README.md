@@ -10,4 +10,6 @@
  7)Student Login
  8)Teachers Login
  9)Librarian Login
+	
+	Run it on Java IDE.
  
